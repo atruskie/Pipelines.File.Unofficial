@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.3, OS=Windows 10.0.17763.253 (1809/October2018Update/Redstone5)
+Intel Core i7-8550U CPU 1.80GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=3.0.100-preview-009812
+  [Host]     : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
+  DefaultJob : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>                                                                          Method</th><th>BufferSize</th><th>    File</th><th>    Mean</th><th> Error</th><th>StdDev</th><th>  Median</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody><tr><td>FileStreamSync</td><td>2048</td><td>_int64_128.bin</td><td>164,135.0 us</td><td>2,372.53 us</td><td>2,219.26 us</td><td>164,142.3 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>6.22 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>2048</td><td>_int64_128.bin</td><td>162,500.7 us</td><td>2,314.58 us</td><td>2,165.06 us</td><td>162,962.2 us</td><td>0.99</td><td>0.02</td><td>-</td><td>-</td><td>-</td><td>6.24 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>2048</td><td>_int64_128.bin</td><td>433,457.6 us</td><td>7,153.31 us</td><td>6,691.21 us</td><td>431,952.2 us</td><td>2.64</td><td>0.06</td><td>3000.0000</td><td>-</td><td>-</td><td>2.75 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>2048</td><td>_int64_128.bin</td><td>409,726.4 us</td><td>7,785.99 us</td><td>8,654.11 us</td><td>411,346.6 us</td><td>2.50</td><td>0.07</td><td>3000.0000</td><td>-</td><td>-</td><td>2.8 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>2048</td><td>_int64_128.bin</td><td>2,201,643.0 us</td><td>49,234.38 us</td><td>65,726.49 us</td><td>2,183,382.1 us</td><td>13.56</td><td>0.55</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>2048</td><td>_int64_128.bin</td><td>652,158.5 us</td><td>12,905.17 us</td><td>24,553.43 us</td><td>645,153.3 us</td><td>4.05</td><td>0.18</td><td>4000.0000</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>2048</td><td>_int64_128.bin</td><td>679,061.5 us</td><td>13,410.05 us</td><td>30,811.81 us</td><td>674,324.1 us</td><td>4.03</td><td>0.15</td><td>4000.0000</td><td>-</td><td>-</td><td>1.33 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>2048</td><td>_int64_128.bin</td><td>735,703.0 us</td><td>15,485.69 us</td><td>38,276.79 us</td><td>731,461.5 us</td><td>4.55</td><td>0.32</td><td>4000.0000</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>2048</td><td>_int64_4.bin</td><td>5,347.7 us</td><td>106.69 us</td><td>222.71 us</td><td>5,354.2 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>6.22 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>2048</td><td>_int64_4.bin</td><td>5,190.5 us</td><td>102.00 us</td><td>181.31 us</td><td>5,130.4 us</td><td>0.98</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>6.24 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>2048</td><td>_int64_4.bin</td><td>14,913.0 us</td><td>298.06 us</td><td>840.68 us</td><td>14,623.0 us</td><td>2.79</td><td>0.20</td><td>93.7500</td><td>-</td><td>-</td><td>2.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>2048</td><td>_int64_4.bin</td><td>16,339.8 us</td><td>641.12 us</td><td>1,839.50 us</td><td>15,682.6 us</td><td>3.07</td><td>0.38</td><td>93.7500</td><td>-</td><td>-</td><td>2.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>2048</td><td>_int64_4.bin</td><td>83,768.2 us</td><td>1,666.62 us</td><td>4,331.76 us</td><td>82,416.2 us</td><td>15.91</td><td>1.22</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>2048</td><td>_int64_4.bin</td><td>25,482.1 us</td><td>506.80 us</td><td>1,317.25 us</td><td>25,345.2 us</td><td>4.79</td><td>0.38</td><td>125.0000</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>2048</td><td>_int64_4.bin</td><td>25,096.5 us</td><td>500.81 us</td><td>1,099.30 us</td><td>25,166.5 us</td><td>4.71</td><td>0.31</td><td>125.0000</td><td>-</td><td>-</td><td>1.15 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>2048</td><td>_int64_4.bin</td><td>23,911.2 us</td><td>474.29 us</td><td>830.69 us</td><td>23,790.9 us</td><td>4.50</td><td>0.22</td><td>125.0000</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>4096</td><td>_int64_128.bin</td><td>191,432.0 us</td><td>3,793.10 us</td><td>8,325.95 us</td><td>191,037.4 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>4.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>4096</td><td>_int64_128.bin</td><td>193,528.7 us</td><td>4,381.47 us</td><td>12,500.57 us</td><td>191,248.0 us</td><td>1.02</td><td>0.07</td><td>-</td><td>-</td><td>-</td><td>4.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>4096</td><td>_int64_128.bin</td><td>329,237.9 us</td><td>8,443.83 us</td><td>23,256.76 us</td><td>324,230.2 us</td><td>1.71</td><td>0.16</td><td>1000.0000</td><td>-</td><td>-</td><td>4.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>4096</td><td>_int64_128.bin</td><td>387,013.1 us</td><td>7,677.10 us</td><td>20,755.49 us</td><td>385,860.9 us</td><td>2.03</td><td>0.14</td><td>1000.0000</td><td>-</td><td>-</td><td>4.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>4096</td><td>_int64_128.bin</td><td>1,502,253.4 us</td><td>30,000.37 us</td><td>42,056.33 us</td><td>1,508,425.3 us</td><td>7.89</td><td>0.54</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>4096</td><td>_int64_128.bin</td><td>597,720.2 us</td><td>23,434.49 us</td><td>69,097.12 us</td><td>578,717.8 us</td><td>3.35</td><td>0.36</td><td>2000.0000</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>4096</td><td>_int64_128.bin</td><td>533,298.0 us</td><td>10,591.33 us</td><td>23,248.22 us</td><td>531,606.6 us</td><td>2.79</td><td>0.14</td><td>2000.0000</td><td>-</td><td>-</td><td>1.33 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>4096</td><td>_int64_128.bin</td><td>564,661.4 us</td><td>24,169.80 us</td><td>68,565.69 us</td><td>544,382.7 us</td><td>2.84</td><td>0.23</td><td>2000.0000</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>4096</td><td>_int64_4.bin</td><td>5,559.9 us</td><td>114.15 us</td><td>310.57 us</td><td>5,489.5 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>4.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>4096</td><td>_int64_4.bin</td><td>5,295.8 us</td><td>109.05 us</td><td>141.80 us</td><td>5,243.4 us</td><td>0.97</td><td>0.05</td><td>-</td><td>-</td><td>-</td><td>4.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>4096</td><td>_int64_4.bin</td><td>10,293.5 us</td><td>388.02 us</td><td>1,113.29 us</td><td>10,253.9 us</td><td>1.86</td><td>0.25</td><td>46.8750</td><td>-</td><td>-</td><td>4.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>4096</td><td>_int64_4.bin</td><td>9,094.5 us</td><td>98.10 us</td><td>86.96 us</td><td>9,119.6 us</td><td>1.61</td><td>0.08</td><td>46.8750</td><td>-</td><td>-</td><td>4.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>4096</td><td>_int64_4.bin</td><td>40,928.2 us</td><td>804.54 us</td><td>1,430.06 us</td><td>40,635.6 us</td><td>7.38</td><td>0.51</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>4096</td><td>_int64_4.bin</td><td>15,073.2 us</td><td>304.29 us</td><td>446.02 us</td><td>15,034.4 us</td><td>2.76</td><td>0.18</td><td>62.5000</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>4096</td><td>_int64_4.bin</td><td>15,039.8 us</td><td>213.13 us</td><td>188.94 us</td><td>15,015.9 us</td><td>2.66</td><td>0.14</td><td>62.5000</td><td>-</td><td>-</td><td>1.14 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>4096</td><td>_int64_4.bin</td><td>15,407.1 us</td><td>312.30 us</td><td>601.70 us</td><td>15,302.7 us</td><td>2.76</td><td>0.19</td><td>62.5000</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>16384</td><td>_int64_128.bin</td><td>64,319.0 us</td><td>783.40 us</td><td>694.46 us</td><td>64,266.0 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>16.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>16384</td><td>_int64_128.bin</td><td>65,394.5 us</td><td>1,255.67 us</td><td>1,048.54 us</td><td>65,172.8 us</td><td>1.02</td><td>0.02</td><td>-</td><td>-</td><td>-</td><td>16.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>16384</td><td>_int64_128.bin</td><td>115,156.3 us</td><td>2,296.75 us</td><td>5,277.17 us</td><td>113,630.9 us</td><td>1.85</td><td>0.10</td><td>-</td><td>-</td><td>-</td><td>16.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>16384</td><td>_int64_128.bin</td><td>108,691.3 us</td><td>1,337.96 us</td><td>1,251.53 us</td><td>108,842.7 us</td><td>1.69</td><td>0.03</td><td>200.0000</td><td>-</td><td>-</td><td>16.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>16384</td><td>_int64_128.bin</td><td>368,722.0 us</td><td>7,226.93 us</td><td>6,760.07 us</td><td>368,904.8 us</td><td>5.73</td><td>0.13</td><td>-</td><td>-</td><td>-</td><td>1.38 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>16384</td><td>_int64_128.bin</td><td>203,809.3 us</td><td>4,063.27 us</td><td>11,054.43 us</td><td>203,944.0 us</td><td>3.14</td><td>0.17</td><td>-</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>16384</td><td>_int64_128.bin</td><td>205,713.8 us</td><td>3,997.32 us</td><td>6,223.34 us</td><td>206,091.0 us</td><td>3.20</td><td>0.11</td><td>-</td><td>-</td><td>-</td><td>1.33 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>16384</td><td>_int64_128.bin</td><td>207,712.0 us</td><td>4,091.29 us</td><td>8,629.92 us</td><td>208,080.8 us</td><td>3.18</td><td>0.19</td><td>-</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>16384</td><td>_int64_4.bin</td><td>1,888.1 us</td><td>24.13 us</td><td>22.57 us</td><td>1,888.7 us</td><td>1.00</td><td>0.00</td><td>3.9063</td><td>-</td><td>-</td><td>16.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>16384</td><td>_int64_4.bin</td><td>1,873.1 us</td><td>23.59 us</td><td>22.07 us</td><td>1,875.6 us</td><td>0.99</td><td>0.02</td><td>3.9063</td><td>-</td><td>-</td><td>16.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>16384</td><td>_int64_4.bin</td><td>3,356.4 us</td><td>68.56 us</td><td>64.13 us</td><td>3,339.4 us</td><td>1.78</td><td>0.05</td><td>15.6250</td><td>-</td><td>-</td><td>16.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>16384</td><td>_int64_4.bin</td><td>3,221.1 us</td><td>35.36 us</td><td>33.07 us</td><td>3,227.9 us</td><td>1.71</td><td>0.03</td><td>15.6250</td><td>-</td><td>-</td><td>16.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>16384</td><td>_int64_4.bin</td><td>11,092.3 us</td><td>210.79 us</td><td>225.54 us</td><td>11,105.1 us</td><td>5.88</td><td>0.14</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>16384</td><td>_int64_4.bin</td><td>5,688.6 us</td><td>108.80 us</td><td>101.77 us</td><td>5,697.1 us</td><td>3.01</td><td>0.06</td><td>15.6250</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>16384</td><td>_int64_4.bin</td><td>5,641.9 us</td><td>78.42 us</td><td>73.36 us</td><td>5,641.6 us</td><td>2.99</td><td>0.04</td><td>15.6250</td><td>-</td><td>-</td><td>1.13 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>16384</td><td>_int64_4.bin</td><td>5,398.6 us</td><td>60.53 us</td><td>56.62 us</td><td>5,420.6 us</td><td>2.86</td><td>0.05</td><td>15.6250</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>65536</td><td>_int64_128.bin</td><td>36,635.6 us</td><td>727.88 us</td><td>1,349.18 us</td><td>36,221.6 us</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>64.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>65536</td><td>_int64_128.bin</td><td>36,142.0 us</td><td>600.89 us</td><td>562.07 us</td><td>36,109.0 us</td><td>1.00</td><td>0.04</td><td>-</td><td>-</td><td>-</td><td>64.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>65536</td><td>_int64_128.bin</td><td>56,314.2 us</td><td>566.92 us</td><td>530.29 us</td><td>56,083.9 us</td><td>1.55</td><td>0.06</td><td>100.0000</td><td>-</td><td>-</td><td>64.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>65536</td><td>_int64_128.bin</td><td>56,357.5 us</td><td>705.70 us</td><td>625.59 us</td><td>56,460.3 us</td><td>1.56</td><td>0.05</td><td>100.0000</td><td>-</td><td>-</td><td>64.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>65536</td><td>_int64_128.bin</td><td>131,199.4 us</td><td>1,936.36 us</td><td>1,811.27 us</td><td>131,181.4 us</td><td>3.62</td><td>0.13</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>65536</td><td>_int64_128.bin</td><td>99,425.7 us</td><td>1,354.97 us</td><td>1,267.44 us</td><td>99,852.0 us</td><td>2.75</td><td>0.13</td><td>-</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>65536</td><td>_int64_128.bin</td><td>97,561.3 us</td><td>1,907.65 us</td><td>2,969.98 us</td><td>96,684.9 us</td><td>2.66</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>1.16 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>65536</td><td>_int64_128.bin</td><td>97,185.9 us</td><td>1,861.80 us</td><td>2,354.58 us</td><td>96,711.1 us</td><td>2.64</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>65536</td><td>_int64_4.bin</td><td>944.9 us</td><td>16.87 us</td><td>14.95 us</td><td>945.1 us</td><td>1.00</td><td>0.00</td><td>13.6719</td><td>-</td><td>-</td><td>64.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>65536</td><td>_int64_4.bin</td><td>953.7 us</td><td>15.87 us</td><td>14.84 us</td><td>953.6 us</td><td>1.01</td><td>0.03</td><td>13.6719</td><td>-</td><td>-</td><td>64.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>65536</td><td>_int64_4.bin</td><td>1,656.4 us</td><td>33.05 us</td><td>38.06 us</td><td>1,653.7 us</td><td>1.75</td><td>0.05</td><td>19.5313</td><td>-</td><td>-</td><td>64.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>65536</td><td>_int64_4.bin</td><td>1,658.3 us</td><td>14.62 us</td><td>12.96 us</td><td>1,655.8 us</td><td>1.76</td><td>0.03</td><td>19.5313</td><td>-</td><td>-</td><td>64.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>65536</td><td>_int64_4.bin</td><td>3,970.0 us</td><td>61.79 us</td><td>54.78 us</td><td>3,959.5 us</td><td>4.20</td><td>0.09</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>65536</td><td>_int64_4.bin</td><td>2,675.3 us</td><td>48.86 us</td><td>45.70 us</td><td>2,667.0 us</td><td>2.83</td><td>0.07</td><td>3.9063</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>65536</td><td>_int64_4.bin</td><td>2,816.3 us</td><td>55.41 us</td><td>51.83 us</td><td>2,796.1 us</td><td>2.98</td><td>0.06</td><td>3.9063</td><td>-</td><td>-</td><td>1.13 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>65536</td><td>_int64_4.bin</td><td>2,789.9 us</td><td>43.53 us</td><td>40.72 us</td><td>2,800.8 us</td><td>2.95</td><td>0.05</td><td>3.9063</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>262144</td><td>_int64_128.bin</td><td>29,470.8 us</td><td>299.95 us</td><td>265.90 us</td><td>29,489.8 us</td><td>1.00</td><td>0.00</td><td>62.5000</td><td>62.5000</td><td>62.5000</td><td>256.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>262144</td><td>_int64_128.bin</td><td>29,828.7 us</td><td>315.16 us</td><td>294.80 us</td><td>29,801.5 us</td><td>1.01</td><td>0.01</td><td>62.5000</td><td>62.5000</td><td>62.5000</td><td>256.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>262144</td><td>_int64_128.bin</td><td>39,609.6 us</td><td>616.06 us</td><td>546.12 us</td><td>39,692.2 us</td><td>1.34</td><td>0.02</td><td>76.9231</td><td>76.9231</td><td>76.9231</td><td>256.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>262144</td><td>_int64_128.bin</td><td>40,325.1 us</td><td>791.63 us</td><td>812.95 us</td><td>40,333.2 us</td><td>1.37</td><td>0.04</td><td>-</td><td>-</td><td>-</td><td>256.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>262144</td><td>_int64_128.bin</td><td>54,860.2 us</td><td>1,072.44 us</td><td>1,317.05 us</td><td>54,701.7 us</td><td>1.87</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>262144</td><td>_int64_128.bin</td><td>60,198.2 us</td><td>740.67 us</td><td>692.82 us</td><td>60,035.4 us</td><td>2.04</td><td>0.03</td><td>-</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>262144</td><td>_int64_128.bin</td><td>59,829.9 us</td><td>978.17 us</td><td>914.98 us</td><td>59,671.2 us</td><td>2.03</td><td>0.03</td><td>-</td><td>-</td><td>-</td><td>1.15 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>262144</td><td>_int64_128.bin</td><td>59,663.9 us</td><td>1,135.12 us</td><td>1,307.21 us</td><td>59,394.8 us</td><td>2.03</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr><tr><td>FileStreamSync</td><td>262144</td><td>_int64_4.bin</td><td>899.3 us</td><td>15.59 us</td><td>13.82 us</td><td>898.8 us</td><td>1.00</td><td>0.00</td><td>82.0313</td><td>82.0313</td><td>82.0313</td><td>256.2 KB</td>
+</tr><tr><td>FileStreamSyncMemoryPool</td><td>262144</td><td>_int64_4.bin</td><td>954.7 us</td><td>19.50 us</td><td>56.25 us</td><td>936.8 us</td><td>1.06</td><td>0.08</td><td>82.0313</td><td>82.0313</td><td>82.0313</td><td>256.22 KB</td>
+</tr><tr><td>FileStreamAsync</td><td>262144</td><td>_int64_4.bin</td><td>1,306.0 us</td><td>21.89 us</td><td>19.40 us</td><td>1,309.2 us</td><td>1.45</td><td>0.03</td><td>82.0313</td><td>82.0313</td><td>82.0313</td><td>256.68 KB</td>
+</tr><tr><td>FileStreamAsyncMemoryPool</td><td>262144</td><td>_int64_4.bin</td><td>1,273.4 us</td><td>25.35 us</td><td>28.18 us</td><td>1,268.5 us</td><td>1.42</td><td>0.04</td><td>82.0313</td><td>82.0313</td><td>82.0313</td><td>256.72 KB</td>
+</tr><tr><td>&#39;This is David Fowl&#39;s Win32 Native implementation&#39;</td><td>262144</td><td>_int64_4.bin</td><td>1,608.8 us</td><td>31.73 us</td><td>61.89 us</td><td>1,594.7 us</td><td>1.85</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>1.27 KB</td>
+</tr><tr><td>&#39;My own minimal FileStream adapter&#39;</td><td>262144</td><td>_int64_4.bin</td><td>1,672.0 us</td><td>20.91 us</td><td>17.46 us</td><td>1,674.8 us</td><td>1.86</td><td>0.04</td><td>-</td><td>-</td><td>-</td><td>1.64 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Marc Gravell&#39;s Pipelines.Sockets.Unofficial&#39;</td><td>262144</td><td>_int64_4.bin</td><td>1,741.0 us</td><td>31.78 us</td><td>26.54 us</td><td>1,750.9 us</td><td>1.93</td><td>0.03</td><td>-</td><td>-</td><td>-</td><td>1.13 KB</td>
+</tr><tr><td>&#39;This is the pipeline stream adapter from Andrew Arnott &#39;s Nerdbank.Streams&#39;</td><td>262144</td><td>_int64_4.bin</td><td>1,737.9 us</td><td>34.40 us</td><td>38.23 us</td><td>1,743.1 us</td><td>1.93</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>1.22 KB</td>
+</tr></tbody></table>
+</body>
+</html>

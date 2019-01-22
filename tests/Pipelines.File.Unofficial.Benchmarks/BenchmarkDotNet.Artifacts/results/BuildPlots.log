@@ -1,0 +1,595 @@
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-boxplot.png ***
+------------------------------
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-barplot.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=2048&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=2048&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=2048&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=2048&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=4096&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=4096&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=4096&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=4096&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=16384&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=16384&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=16384&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=16384&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=65536&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=65536&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=65536&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=65536&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=262144&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=262144&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=262144&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-BufferSize=262144&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_128.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_128.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_128.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_4.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_4.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_4.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=2048&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_128.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_128.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_128.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_4.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_4.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_4.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=4096&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_128.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_128.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_128.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_4.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_4.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_4.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=16384&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_128.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_128.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_128.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_4.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_4.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_4.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=65536&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_128.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_128.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_128.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_4.bin-timeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_4.bin-timelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_4.bin-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-Default BufferSize=262144&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-facetTimeline.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-facetTimelineSmooth.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSync-cummean.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=2048&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=2048&File=_int64_128.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=2048&File=_int64_4.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=2048&File=_int64_4.bin-facetDensity.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=4096&File=_int64_128.bin-density.png ***
+------------------------------
+TableGrob (2 x 1) "arrange": 2 grobs
+  z     cells    name              grob
+1 1 (1-1,1-1) arrange    gtable[layout]
+2 2 (2-2,1-1) arrange text[GRID.text.1]
+*** Plot: C:\Work\GitHub\Pipelines.File.Unofficial\tests\Pipelines.File.Unofficial.Benchmarks\BenchmarkDotNet.Artifacts\results\Pipelines.File.Unofficial.Benchmarks.ReadingBenchmarks-FileStreamSyncMemoryPool-BufferSize=4096&File=_int64_128.bin-facetDensity.png ***
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+gdata: read.xls support for 'XLS' (Excel 97-2004) files ENABLED.
+
+gdata: Unable to load perl libaries needed by read.xls()
+gdata: to support 'XLSX' (Excel 2007+) files.
+
+gdata: Run the function 'installXLSXsupport()'
+gdata: to automatically download and install the perl
+gdata: libaries needed to support Excel XLS and XLSX formats.
+
+Attaching package: 'gdata'
+
+The following objects are masked from 'package:dplyr':
+
+    combine, first, last
+
+The following object is masked from 'package:stats':
+
+    nobs
+
+The following object is masked from 'package:utils':
+
+    object.size
+
+The following object is masked from 'package:base':
+
+    startsWith
+
+
+Attaching package: 'gridExtra'
+
+The following object is masked from 'package:gdata':
+
+    combine
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image

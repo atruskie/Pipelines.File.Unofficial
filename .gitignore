@@ -54,7 +54,8 @@ TestResult.xml
 dlldata.c
 
 # Benchmark Results
-BenchmarkDotNet.Artifacts/
+# I want artifacts to be included because this is no longer a real library
+#BenchmarkDotNet.Artifacts/
 
 # .NET Core
 project.lock.json
@@ -85,7 +86,6 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
-*.log
 *.vspscc
 *.vssscc
 .builds
