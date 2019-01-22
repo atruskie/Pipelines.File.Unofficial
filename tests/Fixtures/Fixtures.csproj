@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TestFixtures</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSBuildTasks" Version="1.5.0.235">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="Template" BeforeTargets="PrepareForBuild">
+    <Exec Command="powershell -noprofile -c &quot;(gc '.\Fixtures.Templated.cs.template') -replace '{FixturesPath}','$(ProjectDir)'| sc '.\Fixtures.Templated.cs'&quot;" Condition=" '$(Configuration)' == 'Debug'" />
+  </Target>
+
+</Project>
