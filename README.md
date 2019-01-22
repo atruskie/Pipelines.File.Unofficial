@@ -3,18 +3,18 @@
 This was going to be an _unofficial_ implementation of file based pipeline primitives.
 
 However, as I learnt more about pipelines and the code that exists already I 
-luckily stopped to benchmark my ideas. As a result of the benchmarks, detailed
+stopped to benchmark my ideas. As a result of the benchmarks, detailed
 below, I've decided there is no need for dedicated file-based pipelines because
 stream adapters are already efficient enough.
 
-Thus, this repo is now benchmarking report rather than a library.
+Thus, this repo is now a benchmarking report rather than a library.
 
 **DISCLAIMER: THIS CODE IS EXPERIMENTAL, I AM NOT AN EXPERT, THERE MAY BE MISTAKES**
 
 ## TL;DR:
 
 - The native pipeline file reader I tested was very memory efficient but very slow and not worth developing
-- FileStream (or stream) pipeline adapters:
+- FileStream (or stream) pipeline adapters (like [Nerdbank.Streams](https://github.com/AArnott/Nerdbank.Streams/blob/c56c016772bce81521ccb79a7130bd4105df9faa/src/Nerdbank.Streams/PipeExtensions.cs)):
   - **are recommended** if you're concerned about memory usage
   - Are slower than the FileStream sync and async APIs
 - All pipeline methods, and async methods are slower than plain old FileStream sync reads
