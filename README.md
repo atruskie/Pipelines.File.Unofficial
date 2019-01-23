@@ -18,6 +18,7 @@ Thus, this repo is now a benchmarking report rather than a library.
   - **are recommended** if you're concerned about memory usage
   - Are slower than the FileStream sync and async APIs
 - All pipeline methods, and async methods are slower than plain old FileStream sync reads
+  - Though if you need non-blocking I/O then straight read performance is arguably not your goal
 - Use a large buffer size (e.g. `65536` bytes or greater) for best reading performance
 
 And look out for the stream adapters in .NET <https://github.com/dotnet/corefx/issues/27246>.
