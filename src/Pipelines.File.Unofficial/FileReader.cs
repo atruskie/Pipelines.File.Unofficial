@@ -38,7 +38,7 @@ namespace Pipelines.File.Unofficial
         // TODO: Other platforms
         private void OpenReadFile(string path)
         {
-            var fileHandle = CreateFile(path, FileAccess.Read, FileShare.Read, IntPtr.Zero, FileMode.Open, EFileAttributes.Overlapped, IntPtr.Zero);
+            var fileHandle = CreateFile(path, FileAccess.Read, FileShare.None, IntPtr.Zero, FileMode.Open, EFileAttributes.Overlapped, IntPtr.Zero);
 
             _readOperation = new ReadOperation(fileHandle, _bufferSize, _writer);
 

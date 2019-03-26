@@ -18,13 +18,13 @@ namespace Pipelines.File.Unofficial
         private readonly Pipe _pipe;
         private readonly CancellationTokenSource _cancellationToken;
 
-        internal FileStreamReader(string path, int bufferSize = 4096)
+        internal FileStreamReader(string path, int bufferSize = 4096, FileOptions fileOptions = FileOptions.Asynchronous)
         {
             _path = path;
             _pipe = new Pipe();
             _writer = _pipe.Writer;
             _bufferSize = bufferSize;
-            _file = System.IO.File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize, fileOptions);
             _cancellationToken = new CancellationTokenSource();
 
 #pragma warning disable 4014 // Purposely firing and forgetting here
@@ -32,9 +32,9 @@ namespace Pipelines.File.Unofficial
 #pragma warning restore 4014
         }
 
-        public static FileStreamReader ReadFile(string path, int bufferSize = 4069)
+        public static FileStreamReader ReadFile(string path, int bufferSize = 4069, FileOptions fileOptions = FileOptions.Asynchronous)
         {
-            var file = new FileStreamReader(path, bufferSize);
+            var file = new FileStreamReader(path, bufferSize, fileOptions);
             return file;
         }
 

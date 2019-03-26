@@ -19,6 +19,10 @@ namespace Pipelines.File.Unofficial.Benchmarks
     [CsvExporter()]
     public class ReadingBenchmarks
     {
+        //Asynchronous = 1073741824, // 0x40000000
+        //SequentialScan = 134217728, // 0x08000000
+        private const int AsyncRead = 0x48000000;
+
         public ReadingBenchmarks()
         {
         }
@@ -38,6 +42,13 @@ namespace Pipelines.File.Unofficial.Benchmarks
             )]
         public int BufferSize { get; set; }
 
+        [Params("Async|Sequential", "Sequential")]
+        public string FileOptionsString { get; set; }
+
+        // this is some bug with bencmarkdotnet's templater that requires this hack or else we get a CS1513
+        public FileOptions FileOptions => FileOptionsString == "Sequential"
+            ? FileOptions.SequentialScan
+            : FileOptions.SequentialScan | FileOptions.Asynchronous;
 
         // public field
         [ParamsSource(nameof(FilesToTest))]
@@ -51,15 +62,13 @@ namespace Pipelines.File.Unofficial.Benchmarks
         {
             ulong last = 0;
 
-            var bufferSize = BufferSize == 1 ? 4096 : BufferSize;
-
-            using (var fileStream = Open(File, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, BufferSize, FileOptions))
             {
-                var buffer = new byte[bufferSize];
+                var buffer = new byte[BufferSize];
                 int bytesRead;
                 do
                 {
-                    bytesRead = fileStream.Read(buffer, 0, bufferSize);
+                    bytesRead = fileStream.Read(buffer, 0, BufferSize);
                     ParseLastNumber(buffer.AsSpan(), ref last);
                 } while (bytesRead != 0);
 
@@ -67,12 +76,12 @@ namespace Pipelines.File.Unofficial.Benchmarks
             }
         }
 
-        [Benchmark]
+        //[Benchmark()]
         public ulong FileStreamSyncMemoryPool()
         {
             ulong last = 0;
 
-            using (var fileStream = Open(File, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, BufferSize, FileOptions))
             {
                 var memoryOwner = MemoryPool<byte>.Shared.Rent(BufferSize);
                 var buffer = memoryOwner.Memory.Span;
@@ -94,7 +103,7 @@ namespace Pipelines.File.Unofficial.Benchmarks
 
             var bufferSize = BufferSize == 1 ? 4096 : BufferSize;
 
-            using (var fileStream = Open(File, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize, FileOptions))
             {
                 var buffer = new byte[bufferSize];
 
@@ -110,12 +119,12 @@ namespace Pipelines.File.Unofficial.Benchmarks
             }
         }
 
-        [Benchmark]
+        //[Benchmark]
         public async Task<ulong> FileStreamAsyncMemoryPool()
         {
             ulong last = 0;
 
-            using (var fileStream = Open(File, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, BufferSize, FileOptions))
             {
                 var memoryOwner = MemoryPool<byte>.Shared.Rent(BufferSize);
                 var buffer = memoryOwner.Memory;
@@ -131,7 +140,7 @@ namespace Pipelines.File.Unofficial.Benchmarks
             }
         }
 
-        [Benchmark(Description = "This is David Fowl's Win32 Native implementation")]
+        [Benchmark()]
         public async Task<ulong> PipelineNative()
         {
             ulong last = 0;
@@ -149,12 +158,12 @@ namespace Pipelines.File.Unofficial.Benchmarks
         }
 
 
-        [Benchmark(Description = "My own minimal FileStream adapter")]
+        [Benchmark()]
         public async Task<ulong> PipelineAdapter()
         {
             ulong last = 0;
 
-            using (var reader = FileStreamReader.ReadFile(File, BufferSize))
+            using (var reader = FileStreamReader.ReadFile(File, BufferSize, FileOptions))
             {
                 var filePipeline = reader.Reader;
                 ReadResult result = default;
@@ -169,12 +178,12 @@ namespace Pipelines.File.Unofficial.Benchmarks
             }
         }
 
-        [Benchmark(Description = "This is the pipeline stream adapter from Marc Gravell's Pipelines.Sockets.Unofficial")]
+        [Benchmark()]
         public async Task<ulong> PipelineAdapter2()
         {
             ulong last = 0;
 
-            using (var reader = Open(File, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var reader = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, BufferSize, FileOptions))
             {
                 var filePipeline = Sockets.Unofficial.StreamConnection.GetReader(reader, new PipeOptions(minimumSegmentSize: BufferSize));
                 ReadResult result = default;
@@ -189,11 +198,11 @@ namespace Pipelines.File.Unofficial.Benchmarks
             }
         }
 
-        [Benchmark(Description = "This is the pipeline stream adapter from Andrew Arnott 's Nerdbank.Streams")]
+        [Benchmark()]
         public async Task<ulong> PipelineAdapter3()
         {
             ulong last = 0;
-            using (var reader = Open(File, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var reader = new FileStream(File, FileMode.Open, FileAccess.Read, FileShare.None, BufferSize, FileOptions))
             {
                 var filePipeline = reader.UsePipeReader(sizeHint: BufferSize);
                 ReadResult result = default;

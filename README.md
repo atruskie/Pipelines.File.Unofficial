@@ -9,15 +9,27 @@ stream adapters are already efficient enough.
 
 Thus, this repo is now a benchmarking report rather than a library.
 
+**UPDATE** Better code/benchmarks as 
+suggested by @feO2x in [#1](https://github.com/atruskie/Pipelines.File.Unofficial/issues/1)
+suggest no changes to recommendations.
+
 **DISCLAIMER: THIS CODE IS EXPERIMENTAL, I AM NOT AN EXPERT, THERE MAY BE MISTAKES**
 
 ## TL;DR:
 
-- The native pipeline file reader I tested was very memory efficient but very slow and not worth developing
+(Full results and conclusion at bottom of this document)
+
+- The native pipeline file reader I tested was very memory efficient but also very slow
+  - Results only calculated for Windows
+  - Native code is tricky to get right - there are lots of gotchas
+    - Windows doesn't even do async reads until the buffer gets to 64000 bytes
+- When `FileOptions.SequentialScan | FileOptions.Asynchronous` are set performance
+    universally gets worse (except for the native pipeline for which the option does not apply)
 - FileStream (or stream) pipeline adapters (like [Nerdbank.Streams](https://github.com/AArnott/Nerdbank.Streams/blob/c56c016772bce81521ccb79a7130bd4105df9faa/src/Nerdbank.Streams/PipeExtensions.cs)):
   - **are recommended** if you're concerned about memory usage
   - Are slower than the FileStream sync and async APIs
-- All pipeline methods, and async methods are slower than plain old FileStream sync reads
+- All pipeline adapters and async methods are slower than plain old FileStream sync reads
+  - This is true whether or not `FileOptions.Asynchronous` is set
   - Though if you need non-blocking I/O then straight read performance is arguably not your goal
 - Use a large buffer size (e.g. `65536` bytes or greater) for best reading performance
 
@@ -101,12 +113,12 @@ and the full benchmark report has been [committed](./tests/Pipelines.File.Unoffi
 
 ### Summary
 
-```
-BenchmarkDotNet=v0.11.3, OS=Windows 10.0.17763.253 (1809/October2018Update/Redstone5)
+``` ini
+BenchmarkDotNet=v0.11.4, OS=Windows 10.0.17763.379 (1809/October2018Update/Redstone5)
 Intel Core i7-8550U CPU 1.80GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical cores
 .NET Core SDK=3.0.100-preview-009812
-[Host]     : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
-DefaultJob : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
+  [Host]     : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
+  DefaultJob : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.18.57103), 64bit RyuJIT
 ```
 
 ### Methods
@@ -123,162 +135,354 @@ DefaultJob : .NET Core 3.0.0-preview-27122-01 (CoreCLR 4.6.27121.03, CoreFX 4.7.
   - _File_: one of two files, both containing incrementing little-endian ulongs, 4 MiB and 128 MiB, respectively
   - _BufferSize_: the amount requested to read each iteration, in bytes. The NT API doesn't even do
     asynchronous reads until the buffer is at least 64k
+  - _FileOptionsString_: 
+    - One of two options either
+      1. _Async|Sequential_ which maps to `FileOptions.SequentialScan | FileOptions.Asynchronous`
+      2. Or _Sequential_ which maps to `FileOptions.SequentialScan`
+    - Note: the `FileOptions` parameter has no effect on the PipelineNative method
+
+Benchmarks with issues:
+  ReadingBenchmarks.PipelineNative: DefaultJob [BufferSize=262144, FileOptionsString=Sequential, File=_int64_4.bin]
 
 
-Method                    | BufferSize |           File |           Mean |        Error |       StdDev |         Median | Ratio | RatioSD |
-------------------------- |----------- |--------------- |---------------:|-------------:|-------------:|---------------:|------:|--------:|
-FileStreamSync            |       2048 | _int64_128.bin |   164,135.0 us |  2,372.53 us |  2,219.26 us |   164,142.3 us |  1.00 |    0.00 |
-FileStreamAsync           |       2048 | _int64_128.bin |   433,457.6 us |  7,153.31 us |  6,691.21 us |   431,952.2 us |  2.64 |    0.06 |
-PipelineNative            |       2048 | _int64_128.bin | 2,201,643.0 us | 49,234.38 us | 65,726.49 us | 2,183,382.1 us | 13.56 |    0.55 |
-PipelineAdapter           |       2048 | _int64_128.bin |   652,158.5 us | 12,905.17 us | 24,553.43 us |   645,153.3 us |  4.05 |    0.18 |
-PipelineAdapter2          |       2048 | _int64_128.bin |   679,061.5 us | 13,410.05 us | 30,811.81 us |   674,324.1 us |  4.03 |    0.15 |
-PipelineAdapter3          |       2048 | _int64_128.bin |   735,703.0 us | 15,485.69 us | 38,276.79 us |   731,461.5 us |  4.55 |    0.32 |
-FileStreamSync            |       2048 |   _int64_4.bin |     5,347.7 us |    106.69 us |    222.71 us |     5,354.2 us |  1.00 |    0.00 |
-FileStreamAsync           |       2048 |   _int64_4.bin |    14,913.0 us |    298.06 us |    840.68 us |    14,623.0 us |  2.79 |    0.20 |
-PipelineNative            |       2048 |   _int64_4.bin |    83,768.2 us |  1,666.62 us |  4,331.76 us |    82,416.2 us | 15.91 |    1.22 |
-PipelineAdapter           |       2048 |   _int64_4.bin |    25,482.1 us |    506.80 us |  1,317.25 us |    25,345.2 us |  4.79 |    0.38 |
-PipelineAdapter2          |       2048 |   _int64_4.bin |    25,096.5 us |    500.81 us |  1,099.30 us |    25,166.5 us |  4.71 |    0.31 |
-PipelineAdapter3          |       2048 |   _int64_4.bin |    23,911.2 us |    474.29 us |    830.69 us |    23,790.9 us |  4.50 |    0.22 |
-FileStreamSync            |       4096 | _int64_128.bin |   191,432.0 us |  3,793.10 us |  8,325.95 us |   191,037.4 us |  1.00 |    0.00 |
-FileStreamAsync           |       4096 | _int64_128.bin |   329,237.9 us |  8,443.83 us | 23,256.76 us |   324,230.2 us |  1.71 |    0.16 |
-PipelineNative            |       4096 | _int64_128.bin | 1,502,253.4 us | 30,000.37 us | 42,056.33 us | 1,508,425.3 us |  7.89 |    0.54 |
-PipelineAdapter           |       4096 | _int64_128.bin |   597,720.2 us | 23,434.49 us | 69,097.12 us |   578,717.8 us |  3.35 |    0.36 |
-PipelineAdapter2          |       4096 | _int64_128.bin |   533,298.0 us | 10,591.33 us | 23,248.22 us |   531,606.6 us |  2.79 |    0.14 |
-PipelineAdapter3          |       4096 | _int64_128.bin |   564,661.4 us | 24,169.80 us | 68,565.69 us |   544,382.7 us |  2.84 |    0.23 |
-FileStreamSync            |       4096 |   _int64_4.bin |     5,559.9 us |    114.15 us |    310.57 us |     5,489.5 us |  1.00 |    0.00 |
-FileStreamAsync           |       4096 |   _int64_4.bin |    10,293.5 us |    388.02 us |  1,113.29 us |    10,253.9 us |  1.86 |    0.25 |
-PipelineNative            |       4096 |   _int64_4.bin |    40,928.2 us |    804.54 us |  1,430.06 us |    40,635.6 us |  7.38 |    0.51 |
-PipelineAdapter           |       4096 |   _int64_4.bin |    15,073.2 us |    304.29 us |    446.02 us |    15,034.4 us |  2.76 |    0.18 |
-PipelineAdapter2          |       4096 |   _int64_4.bin |    15,039.8 us |    213.13 us |    188.94 us |    15,015.9 us |  2.66 |    0.14 |
-PipelineAdapter3          |       4096 |   _int64_4.bin |    15,407.1 us |    312.30 us |    601.70 us |    15,302.7 us |  2.76 |    0.19 |
-FileStreamSync            |      16384 | _int64_128.bin |    64,319.0 us |    783.40 us |    694.46 us |    64,266.0 us |  1.00 |    0.00 |
-FileStreamAsync           |      16384 | _int64_128.bin |   115,156.3 us |  2,296.75 us |  5,277.17 us |   113,630.9 us |  1.85 |    0.10 |
-PipelineNative            |      16384 | _int64_128.bin |   368,722.0 us |  7,226.93 us |  6,760.07 us |   368,904.8 us |  5.73 |    0.13 |
-PipelineAdapter           |      16384 | _int64_128.bin |   203,809.3 us |  4,063.27 us | 11,054.43 us |   203,944.0 us |  3.14 |    0.17 |
-PipelineAdapter2          |      16384 | _int64_128.bin |   205,713.8 us |  3,997.32 us |  6,223.34 us |   206,091.0 us |  3.20 |    0.11 |
-PipelineAdapter3          |      16384 | _int64_128.bin |   207,712.0 us |  4,091.29 us |  8,629.92 us |   208,080.8 us |  3.18 |    0.19 |
-FileStreamSync            |      16384 |   _int64_4.bin |     1,888.1 us |     24.13 us |     22.57 us |     1,888.7 us |  1.00 |    0.00 |
-FileStreamAsync           |      16384 |   _int64_4.bin |     3,356.4 us |     68.56 us |     64.13 us |     3,339.4 us |  1.78 |    0.05 |
-PipelineNative            |      16384 |   _int64_4.bin |    11,092.3 us |    210.79 us |    225.54 us |    11,105.1 us |  5.88 |    0.14 |
-PipelineAdapter           |      16384 |   _int64_4.bin |     5,688.6 us |    108.80 us |    101.77 us |     5,697.1 us |  3.01 |    0.06 |
-PipelineAdapter2          |      16384 |   _int64_4.bin |     5,641.9 us |     78.42 us |     73.36 us |     5,641.6 us |  2.99 |    0.04 |
-PipelineAdapter3          |      16384 |   _int64_4.bin |     5,398.6 us |     60.53 us |     56.62 us |     5,420.6 us |  2.86 |    0.05 |
-FileStreamSync            |      65536 | _int64_128.bin |    36,635.6 us |    727.88 us |  1,349.18 us |    36,221.6 us |  1.00 |    0.00 |
-FileStreamAsync           |      65536 | _int64_128.bin |    56,314.2 us |    566.92 us |    530.29 us |    56,083.9 us |  1.55 |    0.06 |
-PipelineNative            |      65536 | _int64_128.bin |   131,199.4 us |  1,936.36 us |  1,811.27 us |   131,181.4 us |  3.62 |    0.13 |
-PipelineAdapter           |      65536 | _int64_128.bin |    99,425.7 us |  1,354.97 us |  1,267.44 us |    99,852.0 us |  2.75 |    0.13 |
-PipelineAdapter2          |      65536 | _int64_128.bin |    97,561.3 us |  1,907.65 us |  2,969.98 us |    96,684.9 us |  2.66 |    0.15 |
-PipelineAdapter3          |      65536 | _int64_128.bin |    97,185.9 us |  1,861.80 us |  2,354.58 us |    96,711.1 us |  2.64 |    0.15 |
-FileStreamSync            |      65536 |   _int64_4.bin |       944.9 us |     16.87 us |     14.95 us |       945.1 us |  1.00 |    0.00 |
-FileStreamAsync           |      65536 |   _int64_4.bin |     1,656.4 us |     33.05 us |     38.06 us |     1,653.7 us |  1.75 |    0.05 |
-PipelineNative            |      65536 |   _int64_4.bin |     3,970.0 us |     61.79 us |     54.78 us |     3,959.5 us |  4.20 |    0.09 |
-PipelineAdapter           |      65536 |   _int64_4.bin |     2,675.3 us |     48.86 us |     45.70 us |     2,667.0 us |  2.83 |    0.07 |
-PipelineAdapter2          |      65536 |   _int64_4.bin |     2,816.3 us |     55.41 us |     51.83 us |     2,796.1 us |  2.98 |    0.06 |
-PipelineAdapter3          |      65536 |   _int64_4.bin |     2,789.9 us |     43.53 us |     40.72 us |     2,800.8 us |  2.95 |    0.05 |
-FileStreamSync            |     262144 | _int64_128.bin |    29,470.8 us |    299.95 us |    265.90 us |    29,489.8 us |  1.00 |    0.00 |
-FileStreamAsync           |     262144 | _int64_128.bin |    39,609.6 us |    616.06 us |    546.12 us |    39,692.2 us |  1.34 |    0.02 |
-PipelineNative            |     262144 | _int64_128.bin |    54,860.2 us |  1,072.44 us |  1,317.05 us |    54,701.7 us |  1.87 |    0.06 |
-PipelineAdapter           |     262144 | _int64_128.bin |    60,198.2 us |    740.67 us |    692.82 us |    60,035.4 us |  2.04 |    0.03 |
-PipelineAdapter2          |     262144 | _int64_128.bin |    59,829.9 us |    978.17 us |    914.98 us |    59,671.2 us |  2.03 |    0.03 |
-PipelineAdapter3          |     262144 | _int64_128.bin |    59,663.9 us |  1,135.12 us |  1,307.21 us |    59,394.8 us |  2.03 |    0.06 |
-FileStreamSync            |     262144 |   _int64_4.bin |       899.3 us |     15.59 us |     13.82 us |       898.8 us |  1.00 |    0.00 |
-FileStreamAsync           |     262144 |   _int64_4.bin |     1,306.0 us |     21.89 us |     19.40 us |     1,309.2 us |  1.45 |    0.03 |
-PipelineNative            |     262144 |   _int64_4.bin |     1,608.8 us |     31.73 us |     61.89 us |     1,594.7 us |  1.85 |    0.06 |
-PipelineAdapter           |     262144 |   _int64_4.bin |     1,672.0 us |     20.91 us |     17.46 us |     1,674.8 us |  1.86 |    0.04 |
-PipelineAdapter2          |     262144 |   _int64_4.bin |     1,741.0 us |     31.78 us |     26.54 us |     1,750.9 us |  1.93 |    0.03 |
-PipelineAdapter3          |     262144 |   _int64_4.bin |     1,737.9 us |     34.40 us |     38.23 us |     1,743.1 us |  1.93 |    0.06 |
+| Method             | BufferSize | FileOptionsString | File               |               Mean |              Error |            StdDev |             Median |              Ratio |  RatioSD |
+|--------------------|------------|-------------------|--------------------|-------------------:|-------------------:|------------------:|-------------------:|-------------------:|---------:|
+| **FileStreamSync** | **2048**   | **Async           | Sequential**       | **_int64_128.bin** | **2,492,490.4 us** | **49,381.891 us** | **103,078.395 us** | **2,484,851.9 us** | **1.00** |
+| FileStreamAsync    | 2048       | Async_Sequential  | _int64_128.bin     |     3,073,318.6 us |      23,842.492 us |     22,302.281 us |     3,070,711.6 us |               1.19 |     0.04 |
+| PipelineNative     | 2048       | Async_Sequential  | _int64_128.bin     |     2,048,997.6 us |      40,581.643 us |     37,960.094 us |     2,056,381.8 us |               0.79 |     0.04 |
+| PipelineAdapter    | 2048       | Async_Sequential  | _int64_128.bin     |     6,371,385.2 us |     120,317.677 us |    112,545.230 us |     6,335,406.4 us |               2.46 |     0.09 |
+| PipelineAdapter2   | 2048       | Async_Sequential  | _int64_128.bin     |     5,921,651.7 us |     110,608.936 us |    118,350.322 us |     5,961,165.5 us |               2.29 |     0.10 |
+| PipelineAdapter3   | 2048       | Async_Sequential  | _int64_128.bin     |     5,891,550.8 us |     103,403.848 us |     96,724.023 us |     5,865,670.6 us |               2.27 |     0.06 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **2048**   | **Async           | Sequential**       |   **_int64_4.bin** |   **118,926.0 us** |  **2,363.099 us** |   **5,616.154 us** |   **119,123.5 us** | **1.00** |
+| FileStreamAsync    | 2048       | Async_Sequential  | _int64_4.bin       |       157,997.0 us |       3,150.255 us |      6,363.670 us |       156,766.6 us |               1.33 |     0.08 |
+| PipelineNative     | 2048       | Async_Sequential  | _int64_4.bin       |        85,264.7 us |       1,055.834 us |        935.969 us |        85,297.3 us |               0.72 |     0.03 |
+| PipelineAdapter    | 2048       | Async_Sequential  | _int64_4.bin       |       192,037.5 us |       3,780.542 us |      5,658.538 us |       191,862.1 us |               1.61 |     0.08 |
+| PipelineAdapter2   | 2048       | Async_Sequential  | _int64_4.bin       |       171,697.7 us |       5,379.095 us |      7,540.740 us |       168,766.8 us |               1.44 |     0.09 |
+| PipelineAdapter3   | 2048       | Async_Sequential  | _int64_4.bin       |       170,498.4 us |       2,375.639 us |      2,105.942 us |       169,753.7 us |               1.43 |     0.05 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **2048**   | **Sequential**    | **_int64_128.bin** |   **407,573.8 us** |   **8,111.464 us** | **23,789.519 us** |   **410,795.2 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 2048       | Sequential        | _int64_128.bin     |       700,128.1 us |      11,053.114 us |     10,339.090 us |       701,807.1 us |               1.92 |     0.06 |
+| PipelineNative     | 2048       | Sequential        | _int64_128.bin     |     2,598,343.7 us |      58,979.089 us |    172,975.459 us |     2,632,924.2 us |               6.40 |     0.63 |
+| PipelineAdapter    | 2048       | Sequential        | _int64_128.bin     |       938,454.1 us |      18,597.987 us |     40,430.494 us |       926,631.3 us |               2.37 |     0.25 |
+| PipelineAdapter2   | 2048       | Sequential        | _int64_128.bin     |       933,697.6 us |      17,432.140 us |     15,453.138 us |       935,698.9 us |               2.56 |     0.08 |
+| PipelineAdapter3   | 2048       | Sequential        | _int64_128.bin     |       960,720.5 us |      18,741.101 us |     20,830.684 us |       956,470.0 us |               2.62 |     0.09 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **2048**   | **Sequential**    | **_int64_4.bin**   |    **10,417.1 us** |     **130.667 us** |    **115.833 us** |    **10,404.4 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 2048       | Sequential        | _int64_4.bin       |        17,132.3 us |         331.649 us |        431.237 us |        17,056.4 us |               1.65 |     0.05 |
+| PipelineNative     | 2048       | Sequential        | _int64_4.bin       |        73,874.5 us |       1,245.929 us |      1,165.443 us |        74,309.0 us |               7.10 |     0.11 |
+| PipelineAdapter    | 2048       | Sequential        | _int64_4.bin       |        28,189.6 us |         409.901 us |        383.422 us |        28,190.7 us |               2.71 |     0.05 |
+| PipelineAdapter2   | 2048       | Sequential        | _int64_4.bin       |        32,127.6 us |       1,708.423 us |      5,010.510 us |        31,835.9 us |               2.94 |     0.25 |
+| PipelineAdapter3   | 2048       | Sequential        | _int64_4.bin       |        24,774.5 us |         445.964 us |        417.155 us |        24,723.8 us |               2.38 |     0.06 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **4096**   | **Async           | Sequential**       | **_int64_128.bin** | **1,278,629.9 us** | **62,328.532 us** |  **95,182.251 us** | **1,250,891.7 us** | **1.00** |
+| FileStreamAsync    | 4096       | Async_Sequential  | _int64_128.bin     |     1,578,638.5 us |      12,990.924 us |     12,151.719 us |     1,577,514.6 us |               1.21 |     0.11 |
+| PipelineNative     | 4096       | Async_Sequential  | _int64_128.bin     |     1,057,353.7 us |      17,952.148 us |     16,792.450 us |     1,057,315.5 us |               0.81 |     0.07 |
+| PipelineAdapter    | 4096       | Async_Sequential  | _int64_128.bin     |     1,930,152.5 us |      13,891.394 us |     12,994.018 us |     1,930,945.2 us |               1.47 |     0.13 |
+| PipelineAdapter2   | 4096       | Async_Sequential  | _int64_128.bin     |     1,927,733.7 us |      19,186.169 us |     17,946.755 us |     1,928,996.6 us |               1.47 |     0.13 |
+| PipelineAdapter3   | 4096       | Async_Sequential  | _int64_128.bin     |     1,923,680.7 us |      14,865.262 us |     13,904.976 us |     1,924,283.6 us |               1.47 |     0.13 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **4096**   | **Async           | Sequential**       |   **_int64_4.bin** |    **39,033.1 us** |    **650.927 us** |     **608.878 us** |    **39,096.3 us** | **1.00** |
+| FileStreamAsync    | 4096       | Async_Sequential  | _int64_4.bin       |        48,869.6 us |         689.265 us |        644.738 us |        48,938.4 us |               1.25 |     0.02 |
+| PipelineNative     | 4096       | Async_Sequential  | _int64_4.bin       |        32,571.3 us |         650.169 us |        695.674 us |        32,445.5 us |               0.83 |     0.02 |
+| PipelineAdapter    | 4096       | Async_Sequential  | _int64_4.bin       |        61,439.5 us |         771.306 us |        721.480 us |        61,449.4 us |               1.57 |     0.04 |
+| PipelineAdapter2   | 4096       | Async_Sequential  | _int64_4.bin       |        82,726.5 us |       2,279.805 us |      6,686.272 us |        84,728.0 us |               1.84 |     0.33 |
+| PipelineAdapter3   | 4096       | Async_Sequential  | _int64_4.bin       |        83,967.0 us |       1,063.115 us |        994.439 us |        83,789.5 us |               2.15 |     0.04 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **4096**   | **Sequential**    | **_int64_128.bin** |   **157,013.5 us** |   **1,748.052 us** |  **1,635.129 us** |   **157,320.6 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 4096       | Sequential        | _int64_128.bin     |       274,289.4 us |       3,447.316 us |      3,224.621 us |       274,686.1 us |               1.75 |     0.03 |
+| PipelineNative     | 4096       | Sequential        | _int64_128.bin     |     1,054,020.7 us |      16,780.576 us |     15,696.561 us |     1,054,086.3 us |               6.71 |     0.12 |
+| PipelineAdapter    | 4096       | Sequential        | _int64_128.bin     |       443,630.0 us |       8,732.901 us |     10,395.898 us |       442,736.6 us |               2.81 |     0.07 |
+| PipelineAdapter2   | 4096       | Sequential        | _int64_128.bin     |       437,548.9 us |       8,501.127 us |     12,192.062 us |       433,129.9 us |               2.81 |     0.08 |
+| PipelineAdapter3   | 4096       | Sequential        | _int64_128.bin     |       422,289.6 us |       8,418.052 us |      9,356.643 us |       424,202.1 us |               2.68 |     0.06 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **4096**   | **Sequential**    | **_int64_4.bin**   |     **4,802.8 us** |      **91.701 us** |    **112.617 us** |     **4,799.6 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 4096       | Sequential        | _int64_4.bin       |         8,628.0 us |         100.480 us |         93.989 us |         8,609.6 us |               1.80 |     0.05 |
+| PipelineNative     | 4096       | Sequential        | _int64_4.bin       |        34,379.9 us |         650.878 us |        668.404 us |        34,550.8 us |               7.19 |     0.19 |
+| PipelineAdapter    | 4096       | Sequential        | _int64_4.bin       |        12,856.8 us |         247.623 us |        231.627 us |        12,831.7 us |               2.69 |     0.08 |
+| PipelineAdapter2   | 4096       | Sequential        | _int64_4.bin       |        13,259.4 us |         122.545 us |        114.629 us |        13,253.8 us |               2.77 |     0.08 |
+| PipelineAdapter3   | 4096       | Sequential        | _int64_4.bin       |        13,176.9 us |         163.307 us |        152.757 us |        13,177.7 us |               2.75 |     0.06 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **16384**  | **Async           | Sequential**       | **_int64_128.bin** |   **335,609.9 us** |  **6,041.110 us** |   **5,650.858 us** |   **334,384.8 us** | **1.00** |
+| FileStreamAsync    | 16384      | Async_Sequential  | _int64_128.bin     |       408,429.5 us |       8,100.258 us |      7,955.537 us |       408,335.9 us |               1.22 |     0.04 |
+| PipelineNative     | 16384      | Async_Sequential  | _int64_128.bin     |       303,897.3 us |       5,029.804 us |      4,458.790 us |       303,986.3 us |               0.91 |     0.02 |
+| PipelineAdapter    | 16384      | Async_Sequential  | _int64_128.bin     |       515,902.3 us |       8,013.775 us |      7,496.090 us |       515,574.2 us |               1.54 |     0.04 |
+| PipelineAdapter2   | 16384      | Async_Sequential  | _int64_128.bin     |       500,876.2 us |       8,904.030 us |      8,328.835 us |       504,404.7 us |               1.49 |     0.04 |
+| PipelineAdapter3   | 16384      | Async_Sequential  | _int64_128.bin     |       505,080.4 us |       5,977.826 us |      5,591.662 us |       505,011.8 us |               1.51 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **16384**  | **Async           | Sequential**       |   **_int64_4.bin** |    **10,362.0 us** |    **110.252 us** |     **103.130 us** |    **10,369.3 us** | **1.00** |
+| FileStreamAsync    | 16384      | Async_Sequential  | _int64_4.bin       |        13,322.5 us |         175.760 us |        164.406 us |        13,347.3 us |               1.29 |     0.02 |
+| PipelineNative     | 16384      | Async_Sequential  | _int64_4.bin       |         9,356.7 us |         178.654 us |        167.113 us |         9,352.9 us |               0.90 |     0.02 |
+| PipelineAdapter    | 16384      | Async_Sequential  | _int64_4.bin       |        16,566.3 us |         305.305 us |        285.583 us |        16,603.9 us |               1.60 |     0.03 |
+| PipelineAdapter2   | 16384      | Async_Sequential  | _int64_4.bin       |        16,367.0 us |         286.569 us |        268.057 us |        16,382.6 us |               1.58 |     0.02 |
+| PipelineAdapter3   | 16384      | Async_Sequential  | _int64_4.bin       |        16,035.1 us |         264.944 us |        247.829 us |        16,075.7 us |               1.55 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **16384**  | **Sequential**    | **_int64_128.bin** |    **56,581.1 us** |     **547.899 us** |    **512.505 us** |    **56,362.0 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 16384      | Sequential        | _int64_128.bin     |        97,691.5 us |       1,743.049 us |      1,630.449 us |        98,156.9 us |               1.73 |     0.03 |
+| PipelineNative     | 16384      | Sequential        | _int64_128.bin     |       303,071.5 us |       6,000.008 us |      9,688.895 us |       301,179.5 us |               5.26 |     0.17 |
+| PipelineAdapter    | 16384      | Sequential        | _int64_128.bin     |       155,320.0 us |       2,760.812 us |      2,582.465 us |       155,346.2 us |               2.75 |     0.05 |
+| PipelineAdapter2   | 16384      | Sequential        | _int64_128.bin     |       153,646.0 us |       2,993.394 us |      2,800.023 us |       154,104.4 us |               2.72 |     0.06 |
+| PipelineAdapter3   | 16384      | Sequential        | _int64_128.bin     |       154,569.5 us |       1,723.009 us |      1,611.704 us |       154,835.1 us |               2.73 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **16384**  | **Sequential**    | **_int64_4.bin**   |     **1,672.6 us** |       **9.147 us** |      **8.557 us** |     **1,675.0 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 16384      | Sequential        | _int64_4.bin       |         3,160.0 us |          61.814 us |         88.652 us |         3,178.5 us |               1.89 |     0.05 |
+| PipelineNative     | 16384      | Sequential        | _int64_4.bin       |        10,864.9 us |         212.976 us |        394.765 us |        10,932.3 us |               6.35 |     0.32 |
+| PipelineAdapter    | 16384      | Sequential        | _int64_4.bin       |         6,241.1 us |         121.372 us |        124.640 us |         6,264.2 us |               3.72 |     0.08 |
+| PipelineAdapter2   | 16384      | Sequential        | _int64_4.bin       |         6,257.6 us |         124.254 us |        143.091 us |         6,255.2 us |               3.76 |     0.08 |
+| PipelineAdapter3   | 16384      | Sequential        | _int64_4.bin       |         5,063.0 us |         141.425 us |        301.388 us |         4,976.9 us |               3.19 |     0.30 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **65536**  | **Async           | Sequential**       | **_int64_128.bin** |   **107,556.4 us** |  **1,178.186 us** |   **1,102.076 us** |   **107,306.1 us** | **1.00** |
+| FileStreamAsync    | 65536      | Async_Sequential  | _int64_128.bin     |       125,562.2 us |       2,229.077 us |      2,085.080 us |       126,091.6 us |               1.17 |     0.02 |
+| PipelineNative     | 65536      | Async_Sequential  | _int64_128.bin     |       107,382.2 us |       2,068.785 us |      1,935.142 us |       107,561.3 us |               1.00 |     0.01 |
+| PipelineAdapter    | 65536      | Async_Sequential  | _int64_128.bin     |       203,740.4 us |       2,006.881 us |      1,877.238 us |       203,551.3 us |               1.89 |     0.03 |
+| PipelineAdapter2   | 65536      | Async_Sequential  | _int64_128.bin     |       199,475.8 us |       3,782.558 us |      3,714.978 us |       198,790.2 us |               1.86 |     0.04 |
+| PipelineAdapter3   | 65536      | Async_Sequential  | _int64_128.bin     |       201,418.5 us |       3,681.838 us |      3,443.993 us |       200,802.6 us |               1.87 |     0.04 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **65536**  | **Async           | Sequential**       |   **_int64_4.bin** |     **3,332.9 us** |     **26.959 us** |      **25.217 us** |     **3,333.1 us** | **1.00** |
+| FileStreamAsync    | 65536      | Async_Sequential  | _int64_4.bin       |         4,207.7 us |          58.846 us |         55.044 us |         4,204.6 us |               1.26 |     0.02 |
+| PipelineNative     | 65536      | Async_Sequential  | _int64_4.bin       |         3,425.3 us |          45.455 us |         42.519 us |         3,433.1 us |               1.03 |     0.02 |
+| PipelineAdapter    | 65536      | Async_Sequential  | _int64_4.bin       |         6,382.1 us |         111.426 us |        104.228 us |         6,351.3 us |               1.91 |     0.03 |
+| PipelineAdapter2   | 65536      | Async_Sequential  | _int64_4.bin       |         6,331.2 us |          47.550 us |         44.479 us |         6,325.7 us |               1.90 |     0.02 |
+| PipelineAdapter3   | 65536      | Async_Sequential  | _int64_4.bin       |         6,270.0 us |          68.747 us |         64.306 us |         6,267.5 us |               1.88 |     0.02 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **65536**  | **Sequential**    | **_int64_128.bin** |    **29,076.4 us** |     **134.628 us** |    **112.421 us** |    **29,085.0 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 65536      | Sequential        | _int64_128.bin     |        47,373.0 us |         849.843 us |        794.943 us |        47,550.3 us |               1.63 |     0.03 |
+| PipelineNative     | 65536      | Sequential        | _int64_128.bin     |       106,500.6 us |       2,066.380 us |      2,029.461 us |       106,882.6 us |               3.66 |     0.08 |
+| PipelineAdapter    | 65536      | Sequential        | _int64_128.bin     |        77,113.4 us |       1,195.812 us |      1,118.563 us |        77,053.9 us |               2.66 |     0.04 |
+| PipelineAdapter2   | 65536      | Sequential        | _int64_128.bin     |        73,043.4 us |         959.639 us |        897.647 us |        72,822.9 us |               2.51 |     0.03 |
+| PipelineAdapter3   | 65536      | Sequential        | _int64_128.bin     |        74,624.9 us |         976.903 us |        913.796 us |        74,161.4 us |               2.56 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **65536**  | **Sequential**    | **_int64_4.bin**   |       **918.9 us** |       **6.207 us** |      **5.502 us** |       **918.6 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 65536      | Sequential        | _int64_4.bin       |         1,591.3 us |          30.752 us |         41.053 us |         1,578.1 us |               1.76 |     0.05 |
+| PipelineNative     | 65536      | Sequential        | _int64_4.bin       |         3,433.9 us |          49.741 us |         46.528 us |         3,433.3 us |               3.74 |     0.06 |
+| PipelineAdapter    | 65536      | Sequential        | _int64_4.bin       |         2,290.6 us |          44.908 us |         51.716 us |         2,289.9 us |               2.49 |     0.06 |
+| PipelineAdapter2   | 65536      | Sequential        | _int64_4.bin       |         2,333.9 us |          38.928 us |         34.509 us |         2,336.3 us |               2.54 |     0.04 |
+| PipelineAdapter3   | 65536      | Sequential        | _int64_4.bin       |         2,298.0 us |          31.527 us |         29.491 us |         2,302.2 us |               2.50 |     0.04 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **262144** | **Async           | Sequential**       | **_int64_128.bin** |    **44,936.0 us** |    **640.730 us** |     **599.339 us** |    **45,053.7 us** | **1.00** |
+| FileStreamAsync    | 262144     | Async_Sequential  | _int64_128.bin     |        49,876.7 us |         429.915 us |        402.143 us |        49,724.2 us |               1.11 |     0.01 |
+| PipelineNative     | 262144     | Async_Sequential  | _int64_128.bin     |        44,884.0 us |         581.473 us |        543.910 us |        45,024.9 us |               1.00 |     0.02 |
+| PipelineAdapter    | 262144     | Async_Sequential  | _int64_128.bin     |        68,550.8 us |       1,325.400 us |      1,526.332 us |        68,285.8 us |               1.53 |     0.04 |
+| PipelineAdapter2   | 262144     | Async_Sequential  | _int64_128.bin     |        70,488.0 us |       1,079.301 us |      1,009.579 us |        70,341.7 us |               1.57 |     0.02 |
+| PipelineAdapter3   | 262144     | Async_Sequential  | _int64_128.bin     |        70,533.9 us |         616.385 us |        546.409 us |        70,480.2 us |               1.57 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **262144** | **Async           | Sequential**       |   **_int64_4.bin** |     **1,580.2 us** |     **19.631 us** |      **18.363 us** |     **1,586.0 us** | **1.00** |
+| FileStreamAsync    | 262144     | Async_Sequential  | _int64_4.bin       |         1,941.5 us |          30.358 us |         28.397 us |         1,951.5 us |               1.23 |     0.02 |
+| PipelineNative     | 262144     | Async_Sequential  | _int64_4.bin       |         1,476.3 us |          28.015 us |         26.205 us |         1,472.3 us |               0.93 |     0.02 |
+| PipelineAdapter    | 262144     | Async_Sequential  | _int64_4.bin       |         2,323.9 us |          29.659 us |         27.743 us |         2,334.8 us |               1.47 |     0.02 |
+| PipelineAdapter2   | 262144     | Async_Sequential  | _int64_4.bin       |         2,295.6 us |          29.636 us |         27.721 us |         2,293.6 us |               1.45 |     0.03 |
+| PipelineAdapter3   | 262144     | Async_Sequential  | _int64_4.bin       |         2,294.7 us |          30.288 us |         28.332 us |         2,294.6 us |               1.45 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **262144** | **Sequential**    | **_int64_128.bin** |    **24,367.6 us** |     **227.903 us** |    **202.030 us** |    **24,320.1 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 262144     | Sequential        | _int64_128.bin     |        33,114.1 us |         436.462 us |        386.912 us |        33,193.4 us |               1.36 |     0.02 |
+| PipelineNative     | 262144     | Sequential        | _int64_128.bin     |        45,332.8 us |         570.905 us |        534.025 us |        45,355.9 us |               1.86 |     0.03 |
+| PipelineAdapter    | 262144     | Sequential        | _int64_128.bin     |        47,459.6 us |         374.590 us |        350.392 us |        47,355.0 us |               1.95 |     0.02 |
+| PipelineAdapter2   | 262144     | Sequential        | _int64_128.bin     |        47,878.4 us |         635.916 us |        594.836 us |        47,769.4 us |               1.96 |     0.03 |
+| PipelineAdapter3   | 262144     | Sequential        | _int64_128.bin     |        48,205.8 us |         618.606 us |        578.644 us |        48,063.5 us |               1.98 |     0.03 |
+|                    |            |                   |                    |                    |                    |                   |                    |                    |          |
+| **FileStreamSync** | **262144** | **Sequential**    | **_int64_4.bin**   |       **876.6 us** |       **9.510 us** |      **8.896 us** |       **875.8 us** |           **1.00** | **0.00** |
+| FileStreamAsync    | 262144     | Sequential        | _int64_4.bin       |         1,269.4 us |          17.702 us |         16.559 us |         1,272.8 us |               1.45 |     0.03 |
+| PipelineNative     | 262144     | Sequential        | _int64_4.bin       |                 NA |                 NA |                NA |                 NA |                  ? |        ? |
+| PipelineAdapter    | 262144     | Sequential        | _int64_4.bin       |         1,540.1 us |          10.484 us |          9.806 us |         1,544.3 us |               1.76 |     0.02 |
+| PipelineAdapter2   | 262144     | Sequential        | _int64_4.bin       |         1,583.2 us |          22.778 us |         21.307 us |         1,586.5 us |               1.81 |     0.03 |
+| PipelineAdapter3   | 262144     | Sequential        | _int64_4.bin       |         1,557.6 us |          14.485 us |         13.549 us |         1,557.3 us |               1.78 |     0.03 |
 
-Method                    | BufferSize |           File | Gen 0/1k Op | Gen 1/1k Op | Gen 2/1k Op | Allocated Memory/Op |
-------------------------- |----------- |--------------- |------------:|------------:|------------:|--------------------:|
-FileStreamSync            |       2048 | _int64_128.bin |           - |           - |           - |             6.22 KB |
-FileStreamAsync           |       2048 | _int64_128.bin |   3000.0000 |           - |           - |             2.75 KB |
-PipelineNative            |       2048 | _int64_128.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |       2048 | _int64_128.bin |   4000.0000 |           - |           - |             1.64 KB |
-PipelineAdapter2          |       2048 | _int64_128.bin |   4000.0000 |           - |           - |             1.33 KB |
-PipelineAdapter3          |       2048 | _int64_128.bin |   4000.0000 |           - |           - |             1.22 KB |
-FileStreamSync            |       2048 |   _int64_4.bin |           - |           - |           - |             6.22 KB |
-FileStreamAsync           |       2048 |   _int64_4.bin |     93.7500 |           - |           - |             2.68 KB |
-PipelineNative            |       2048 |   _int64_4.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |       2048 |   _int64_4.bin |    125.0000 |           - |           - |             1.64 KB |
-PipelineAdapter2          |       2048 |   _int64_4.bin |    125.0000 |           - |           - |             1.15 KB |
-PipelineAdapter3          |       2048 |   _int64_4.bin |    125.0000 |           - |           - |             1.22 KB |
-FileStreamSync            |       4096 | _int64_128.bin |           - |           - |           - |              4.2 KB |
-FileStreamAsync           |       4096 | _int64_128.bin |   1000.0000 |           - |           - |             4.68 KB |
-PipelineNative            |       4096 | _int64_128.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |       4096 | _int64_128.bin |   2000.0000 |           - |           - |             1.64 KB |
-PipelineAdapter2          |       4096 | _int64_128.bin |   2000.0000 |           - |           - |             1.33 KB |
-PipelineAdapter3          |       4096 | _int64_128.bin |   2000.0000 |           - |           - |             1.22 KB |
-FileStreamSync            |       4096 |   _int64_4.bin |           - |           - |           - |              4.2 KB |
-FileStreamAsync           |       4096 |   _int64_4.bin |     46.8750 |           - |           - |             4.68 KB |
-PipelineNative            |       4096 |   _int64_4.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |       4096 |   _int64_4.bin |     62.5000 |           - |           - |             1.64 KB |
-PipelineAdapter2          |       4096 |   _int64_4.bin |     62.5000 |           - |           - |             1.14 KB |
-PipelineAdapter3          |       4096 |   _int64_4.bin |     62.5000 |           - |           - |             1.22 KB |
-FileStreamSync            |      16384 | _int64_128.bin |           - |           - |           - |             16.2 KB |
-FileStreamAsync           |      16384 | _int64_128.bin |           - |           - |           - |            16.68 KB |
-PipelineNative            |      16384 | _int64_128.bin |           - |           - |           - |             1.38 KB |
-PipelineAdapter           |      16384 | _int64_128.bin |           - |           - |           - |             1.64 KB |
-PipelineAdapter2          |      16384 | _int64_128.bin |           - |           - |           - |             1.33 KB |
-PipelineAdapter3          |      16384 | _int64_128.bin |           - |           - |           - |             1.22 KB |
-FileStreamSync            |      16384 |   _int64_4.bin |      3.9063 |           - |           - |             16.2 KB |
-FileStreamAsync           |      16384 |   _int64_4.bin |     15.6250 |           - |           - |            16.68 KB |
-PipelineNative            |      16384 |   _int64_4.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |      16384 |   _int64_4.bin |     15.6250 |           - |           - |             1.64 KB |
-PipelineAdapter2          |      16384 |   _int64_4.bin |     15.6250 |           - |           - |             1.13 KB |
-PipelineAdapter3          |      16384 |   _int64_4.bin |     15.6250 |           - |           - |             1.22 KB |
-FileStreamSync            |      65536 | _int64_128.bin |           - |           - |           - |             64.2 KB |
-FileStreamAsync           |      65536 | _int64_128.bin |    100.0000 |           - |           - |            64.68 KB |
-PipelineNative            |      65536 | _int64_128.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |      65536 | _int64_128.bin |           - |           - |           - |             1.64 KB |
-PipelineAdapter2          |      65536 | _int64_128.bin |           - |           - |           - |             1.16 KB |
-PipelineAdapter3          |      65536 | _int64_128.bin |           - |           - |           - |             1.22 KB |
-FileStreamSync            |      65536 |   _int64_4.bin |     13.6719 |           - |           - |             64.2 KB |
-FileStreamAsync           |      65536 |   _int64_4.bin |     19.5313 |           - |           - |            64.68 KB |
-PipelineNative            |      65536 |   _int64_4.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |      65536 |   _int64_4.bin |      3.9063 |           - |           - |             1.64 KB |
-PipelineAdapter2          |      65536 |   _int64_4.bin |      3.9063 |           - |           - |             1.13 KB |
-PipelineAdapter3          |      65536 |   _int64_4.bin |      3.9063 |           - |           - |             1.22 KB |
-FileStreamSync            |     262144 | _int64_128.bin |     62.5000 |     62.5000 |     62.5000 |            256.2 KB |
-FileStreamAsync           |     262144 | _int64_128.bin |     76.9231 |     76.9231 |     76.9231 |           256.68 KB |
-PipelineNative            |     262144 | _int64_128.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |     262144 | _int64_128.bin |           - |           - |           - |             1.64 KB |
-PipelineAdapter2          |     262144 | _int64_128.bin |           - |           - |           - |             1.15 KB |
-PipelineAdapter3          |     262144 | _int64_128.bin |           - |           - |           - |             1.22 KB |
-FileStreamSync            |     262144 |   _int64_4.bin |     82.0313 |     82.0313 |     82.0313 |            256.2 KB |
-FileStreamAsync           |     262144 |   _int64_4.bin |     82.0313 |     82.0313 |     82.0313 |           256.68 KB |
-PipelineNative            |     262144 |   _int64_4.bin |           - |           - |           - |             1.27 KB |
-PipelineAdapter           |     262144 |   _int64_4.bin |           - |           - |           - |             1.64 KB |
-PipelineAdapter2          |     262144 |   _int64_4.bin |           - |           - |           - |             1.13 KB |
-PipelineAdapter3          |     262144 |   _int64_4.bin |           - |           - |           - |             1.22 KB |
 
+| Method             | BufferSize | FileOptionsString | File               | Gen 0/1k Op |   Gen 1/1k Op | Gen 2/1k Op | Allocated Memory/Op |
+|--------------------|------------|-------------------|--------------------|------------:|--------------:|------------:|--------------------:|
+| **FileStreamSync** | **2048**   | **Async           | Sequential**       |    **0.00** | **4000.0000** |       **-** |               **-** |
+| FileStreamAsync    | 2048       | Async_Sequential  | _int64_128.bin     |   4000.0000 |             - |           - |              2872 B |
+| PipelineNative     | 2048       | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1408 B |
+| PipelineAdapter    | 2048       | Async_Sequential  | _int64_128.bin     |   5000.0000 |             - |           - |              2160 B |
+| PipelineAdapter2   | 2048       | Async_Sequential  | _int64_128.bin     |   5000.0000 |             - |           - |              1392 B |
+| PipelineAdapter3   | 2048       | Async_Sequential  | _int64_128.bin     |   5000.0000 |             - |           - |              1400 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **2048**   | **Async           | Sequential**       |    **0.00** |         **-** |       **-** |               **-** |
+| FileStreamAsync    | 2048       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              2800 B |
+| PipelineNative     | 2048       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 2048       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 2048       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1253 B |
+| PipelineAdapter3   | 2048       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **2048**   | **Sequential**    | **_int64_128.bin** |       **-** |         **-** |       **-** |          **2248 B** |
+| FileStreamAsync    | 2048       | Sequential        | _int64_128.bin     |   3000.0000 |             - |           - |              2816 B |
+| PipelineNative     | 2048       | Sequential        | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 2048       | Sequential        | _int64_128.bin     |   4000.0000 |             - |           - |              1680 B |
+| PipelineAdapter2   | 2048       | Sequential        | _int64_128.bin     |   4000.0000 |             - |           - |              1480 B |
+| PipelineAdapter3   | 2048       | Sequential        | _int64_128.bin     |   4000.0000 |             - |           - |              1368 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **2048**   | **Sequential**    | **_int64_4.bin**   |       **-** |         **-** |       **-** |          **2248 B** |
+| FileStreamAsync    | 2048       | Sequential        | _int64_4.bin       |     93.7500 |             - |           - |              2744 B |
+| PipelineNative     | 2048       | Sequential        | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 2048       | Sequential        | _int64_4.bin       |    125.0000 |             - |           - |              1680 B |
+| PipelineAdapter2   | 2048       | Sequential        | _int64_4.bin       |    125.0000 |             - |           - |              1178 B |
+| PipelineAdapter3   | 2048       | Sequential        | _int64_4.bin       |    125.0000 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **4096**   | **Async           | Sequential**       |    **0.00** | **2000.0000** |       **-** |               **-** |
+| FileStreamAsync    | 4096       | Async_Sequential  | _int64_128.bin     |   2000.0000 |             - |           - |              4920 B |
+| PipelineNative     | 4096       | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1408 B |
+| PipelineAdapter    | 4096       | Async_Sequential  | _int64_128.bin     |   2000.0000 |             - |           - |              2160 B |
+| PipelineAdapter2   | 4096       | Async_Sequential  | _int64_128.bin     |   2000.0000 |             - |           - |              1392 B |
+| PipelineAdapter3   | 4096       | Async_Sequential  | _int64_128.bin     |   2000.0000 |             - |           - |              1400 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **4096**   | **Async           | Sequential**       |    **0.00** |   **71.4286** |       **-** |               **-** |
+| FileStreamAsync    | 4096       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              4848 B |
+| PipelineNative     | 4096       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 4096       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 4096       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1207 B |
+| PipelineAdapter3   | 4096       | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **4096**   | **Sequential**    | **_int64_128.bin** |       **-** |         **-** |       **-** |          **4296 B** |
+| FileStreamAsync    | 4096       | Sequential        | _int64_128.bin     |   1500.0000 |             - |           - |              4792 B |
+| PipelineNative     | 4096       | Sequential        | _int64_128.bin     |           - |             - |           - |              1408 B |
+| PipelineAdapter    | 4096       | Sequential        | _int64_128.bin     |   2000.0000 |             - |           - |              1880 B |
+| PipelineAdapter2   | 4096       | Sequential        | _int64_128.bin     |   2000.0000 |             - |           - |              1360 B |
+| PipelineAdapter3   | 4096       | Sequential        | _int64_128.bin     |   2000.0000 |             - |           - |              1368 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **4096**   | **Sequential**    | **_int64_4.bin**   |       **-** |         **-** |       **-** |          **4296 B** |
+| FileStreamAsync    | 4096       | Sequential        | _int64_4.bin       |     46.8750 |             - |           - |              4792 B |
+| PipelineNative     | 4096       | Sequential        | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 4096       | Sequential        | _int64_4.bin       |     62.5000 |             - |           - |              1680 B |
+| PipelineAdapter2   | 4096       | Sequential        | _int64_4.bin       |     62.5000 |             - |           - |              1168 B |
+| PipelineAdapter3   | 4096       | Sequential        | _int64_4.bin       |     62.5000 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **16384**  | **Async           | Sequential**       |    **0.00** |         **-** |       **-** |               **-** |
+| FileStreamAsync    | 16384      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |             17208 B |
+| PipelineNative     | 16384      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1408 B |
+| PipelineAdapter    | 16384      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              2160 B |
+| PipelineAdapter2   | 16384      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1512 B |
+| PipelineAdapter3   | 16384      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1400 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **16384**  | **Async           | Sequential**       |    **0.00** |   **15.6250** |       **-** |               **-** |
+| FileStreamAsync    | 16384      | Async_Sequential  | _int64_4.bin       |     15.6250 |             - |           - |             17136 B |
+| PipelineNative     | 16384      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 16384      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 16384      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1190 B |
+| PipelineAdapter3   | 16384      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **16384**  | **Sequential**    | **_int64_128.bin** |       **-** |         **-** |       **-** |         **16584 B** |
+| FileStreamAsync    | 16384      | Sequential        | _int64_128.bin     |    400.0000 |             - |           - |             17080 B |
+| PipelineNative     | 16384      | Sequential        | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 16384      | Sequential        | _int64_128.bin     |    500.0000 |             - |           - |              1680 B |
+| PipelineAdapter2   | 16384      | Sequential        | _int64_128.bin     |    500.0000 |             - |           - |              1256 B |
+| PipelineAdapter3   | 16384      | Sequential        | _int64_128.bin     |    500.0000 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **16384**  | **Sequential**    | **_int64_4.bin**   |  **3.9063** |         **-** |       **-** |         **16584 B** |
+| FileStreamAsync    | 16384      | Sequential        | _int64_4.bin       |     15.6250 |             - |           - |             17080 B |
+| PipelineNative     | 16384      | Sequential        | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 16384      | Sequential        | _int64_4.bin       |     15.6250 |             - |           - |              1680 B |
+| PipelineAdapter2   | 16384      | Sequential        | _int64_4.bin       |     15.6250 |             - |           - |              1157 B |
+| PipelineAdapter3   | 16384      | Sequential        | _int64_4.bin       |     15.6250 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **65536**  | **Async           | Sequential**       |    **0.00** |         **-** |       **-** |               **-** |
+| FileStreamAsync    | 65536      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |             66288 B |
+| PipelineNative     | 65536      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 65536      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 65536      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1253 B |
+| PipelineAdapter3   | 65536      | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **65536**  | **Async           | Sequential**       |    **0.00** |   **19.5313** |       **-** |               **-** |
+| FileStreamAsync    | 65536      | Async_Sequential  | _int64_4.bin       |     15.6250 |             - |           - |             66288 B |
+| PipelineNative     | 65536      | Async_Sequential  | _int64_4.bin       |      3.9063 |             - |           - |              1296 B |
+| PipelineAdapter    | 65536      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 65536      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1186 B |
+| PipelineAdapter3   | 65536      | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **65536**  | **Sequential**    | **_int64_128.bin** |       **-** |         **-** |       **-** |         **65736 B** |
+| FileStreamAsync    | 65536      | Sequential        | _int64_128.bin     |     90.9091 |             - |           - |             66232 B |
+| PipelineNative     | 65536      | Sequential        | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 65536      | Sequential        | _int64_128.bin     |    142.8571 |             - |           - |              1680 B |
+| PipelineAdapter2   | 65536      | Sequential        | _int64_128.bin     |    142.8571 |             - |           - |              1182 B |
+| PipelineAdapter3   | 65536      | Sequential        | _int64_128.bin     |    142.8571 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **65536**  | **Sequential**    | **_int64_4.bin**   | **14.6484** |         **-** |       **-** |         **65736 B** |
+| FileStreamAsync    | 65536      | Sequential        | _int64_4.bin       |     19.5313 |             - |           - |             66232 B |
+| PipelineNative     | 65536      | Sequential        | _int64_4.bin       |      3.9063 |             - |           - |              1296 B |
+| PipelineAdapter    | 65536      | Sequential        | _int64_4.bin       |      3.9063 |             - |           - |              1680 B |
+| PipelineAdapter2   | 65536      | Sequential        | _int64_4.bin       |      3.9063 |             - |           - |              1154 B |
+| PipelineAdapter3   | 65536      | Sequential        | _int64_4.bin       |      3.9063 |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **262144** | **Async           | Sequential**       |    **0.00** |         **-** |       **-** |               **-** |
+| FileStreamAsync    | 262144     | Async_Sequential  | _int64_128.bin     |           - |             - |           - |            262896 B |
+| PipelineNative     | 262144     | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 262144     | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 262144     | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1210 B |
+| PipelineAdapter3   | 262144     | Async_Sequential  | _int64_128.bin     |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **262144** | **Async           | Sequential**       |    **0.00** |   **82.0313** | **82.0313** |         **82.0313** |
+| FileStreamAsync    | 262144     | Async_Sequential  | _int64_4.bin       |     82.0313 |       82.0313 |     82.0313 |            262896 B |
+| PipelineNative     | 262144     | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 262144     | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1960 B |
+| PipelineAdapter2   | 262144     | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1185 B |
+| PipelineAdapter3   | 262144     | Async_Sequential  | _int64_4.bin       |           - |             - |           - |              1280 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **262144** | **Sequential**    | **_int64_128.bin** | **62.5000** |   **62.5000** | **62.5000** |        **262344 B** |
+| FileStreamAsync    | 262144     | Sequential        | _int64_128.bin     |     62.5000 |       62.5000 |     62.5000 |            262840 B |
+| PipelineNative     | 262144     | Sequential        | _int64_128.bin     |           - |             - |           - |              1296 B |
+| PipelineAdapter    | 262144     | Sequential        | _int64_128.bin     |           - |             - |           - |              1680 B |
+| PipelineAdapter2   | 262144     | Sequential        | _int64_128.bin     |           - |             - |           - |              1171 B |
+| PipelineAdapter3   | 262144     | Sequential        | _int64_128.bin     |           - |             - |           - |              1248 B |
+|                    |            |                   |                    |             |               |             |                     |
+| **FileStreamSync** | **262144** | **Sequential**    | **_int64_4.bin**   | **83.0078** |   **83.0078** | **83.0078** |        **262344 B** |
+| FileStreamAsync    | 262144     | Sequential        | _int64_4.bin       |     82.0313 |       82.0313 |     82.0313 |            262840 B |
+| PipelineNative     | 262144     | Sequential        | _int64_4.bin       |           - |             - |           - |                   - |
+| PipelineAdapter    | 262144     | Sequential        | _int64_4.bin       |           - |             - |           - |              1680 B |
+| PipelineAdapter2   | 262144     | Sequential        | _int64_4.bin       |           - |             - |           - |              1152 B |
+| PipelineAdapter3   | 262144     | Sequential        | _int64_4.bin       |           - |             - |           - |              1248 B |
 ## Observations
 
+Note: the `FileOptions` parameter has no effect on the PipelineNative method
+
+  - In **every single case** specifying the additional `FileOptions.Asynchronous` flag
+    resulted in slower performance than not
+    - Where the Buffer, File, and Method are constant
+    - Except in the PipelineNative method where this parameter is ignored
+    - On average specifying  `FileOptions.Asynchronous` was `3.56` times slower than not
+      - In the worst case it was `9.22` times slower
+      - In the best case it was `1.45` times slower (File=_int64_128.bin, Buffer=262144, Method=PipelineAdapter2)
   - FileStream's sync methods are _always_ fastest
+    - For just `FileOptions.SequentialScan | FileOptions.Asynchronous`
+      - PipelineNative performs better (remember `FileOptions` has no effect)
   - FileStream's async methods are always faster than all pipeline methods
+    - Except when `FileOptions.SequentialScan | FileOptions.Asynchronous` is set
+      - PipelineNative performs better (remember `FileOptions` has no effect)
   - BufferSize has a large affect on performance, decreasing read times as buffer size increases
+    - this effect held for all groups (when Method, FileOptions, and FileSize are the same)
   - The FileStream async method is consistently slower than its sync counterpart
-    - Though the ratio shrinks from `2.64` times slower at small buffers sizes to only `1.34` times at large buffers
+    - Though the ratio shrinks from `1.92` times slower at small buffers sizes to only `1.11` times at large buffers
+    - This effect is less severe when `FileOptions.SequentialScan | FileOptions.Asynchronous` is set
   - For the native pipeline wrapper
-    - The native API pipeline performs very poorly (up to `15` times slower than sync) at small buffer sizes
-    - At larger buffer sizes, the native API is comparable to FileStream's async method
-    - At larger buffer sizes, the native API is as fast as the FileStream adapters
-  - Pipeline adapters
-    - The adapters also perform _much_ better thant the native pipeline at lower buffer sizes
+    - If we split the results into three groups:
+      1. `FileOptions.SequentialScan`: Results within groups are faster than PipelineNative
+      2. PipelineNative sits in the middle
+      3. `FileOptions.SequentialScan | FileOptions.Asynchronous`: Results with groups are slower than PipelineNative
+    - The native API pipeline performs very poorly (up to `7` times slower than sync) at small buffer sizes when `FileOptions.SequentialScan` is set (Group 1 vs 2)
+    - The native API pipeline performs very well (`0.892` times sync) when `FileOptions.SequentialScan | FileOptions.Asynchronous` (Group 3 vs 2)
+  - Pipeline adapters (summarised for `FileOptions.SequentialScan` only)
+    - The adapters also perform _much_ better than the native pipeline at lower buffer
+      - On average `2.582` time slower than FileStreamSync
+      - But faster than PipeLineNative which was on average `5.36` times slower the FileStreamSync
     - All of the pipeline adapters have fairly consistent performance compared to each other
     - They also experience less variance across experiemnts
-      - the slowest ratio is `~4.7` times sync and `1.93` times sync (`2.77` ratio variance over tests)
-      - this is much less variance than experienced by the native pipeline (`14.06` ratio variance over tests)
-    - Until BufferSize reaches `262144` all pipeline adapters  are faster than the native pipeline
+      - the slowest ratio is `3.19` times FileStreamSync and fastest is `1.76` times FileStreamSync (`1.43` ratio variance over tests)
+      - this is much less variance than experienced by the native pipeline (`5.33` ratio variance over tests)
   - File size differences:
-    - the smaller file regularly is almost always slower than the larger file
+    - the smaller file regularly is slower per MB than the larger file
+      - Mean time taken scaled relative to file size
+      - this effect is not seen with the PipelineAdapters (close to equivalent time taken per MB) at all buffer sizes
+      - For PipeLineNative
+        - this effect is prominent with buffer size `2048`
+        - and is non-existent at larger buffer sizes
   - Memory:
     - The traditional file stream methods always allocate at least as much memory as the buffer
+    - The FileStreamSync method with the `FileOptions.SequentialScan | FileOptions.Asynchronous` option allocates very large amounts of memory and should be avoided!
+      - `20`MB per operation in the worse case!
     - All pipeline methods allocate less memory than non-pipeline methods
     - The native pipeline never requires garbage collections for Gen 0, 1, or 2!
-    - Only the traditional file stream methods have objects that survive to Gen 1 and 2, and only at buffer sizes above `65536`
+    - Only the traditional file stream methods have objects that survive to Gen 1 and 2, and only at buffer size `262144`
     - The pipeline adapters do require garbage collection for Gen 0 objects:
       - At the smallest buffer size (`2048`), `4000` collections occurred!
-      - But after buffer size `16384`, the number of collections are equal or less than other methods
+      - But after buffer size `16384`, the number of collections are equal or less than other methods, and sometime require no collections also
 
 
   ---

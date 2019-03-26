@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.11.3" />
-    <PackageReference Include="Nerdbank.Streams" Version="2.0.206" />
-    <PackageReference Include="Pipelines.Sockets.Unofficial" Version="1.0.9" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.11.4" />
+    <PackageReference Include="Nerdbank.Streams" Version="2.1.28-beta" />
+    <PackageReference Include="Pipelines.Sockets.Unofficial" Version="2.0.7" />
   </ItemGroup>
 
   <ItemGroup>
