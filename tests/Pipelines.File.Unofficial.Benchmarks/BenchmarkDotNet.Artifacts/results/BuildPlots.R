@@ -1,4 +1,4 @@
-BenchmarkDotNetVersion <- "BenchmarkDotNet v0.11.3 "
+BenchmarkDotNetVersion <- "BenchmarkDotNet v0.11.4 "
 dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE, showWarnings = FALSE)
 list.of.packages <- c("ggplot2", "dplyr", "gdata", "tidyr", "grid", "gridExtra", "Rcpp")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
