@@ -33,6 +33,10 @@ suggest no changes to recommendations.
   - Though if you need non-blocking I/O then straight read performance is arguably not your goal
 - Use a large buffer size (e.g. `65536` bytes or greater) for best reading performance
 
+You can read more about file performance for ordinary reading scenarios:
+- In @feO2x's [InsightsOnFiles](https://github.com/feO2x/InsightsOnFiles)
+- Add at the .NET performance repo https://github.com/dotnet/performance/issues/402
+
 And look out for the stream adapters in .NET <https://github.com/dotnet/corefx/issues/27246>.
 
 ## Background
