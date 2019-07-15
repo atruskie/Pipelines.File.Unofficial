@@ -84,7 +84,7 @@ Win32 implementation of a file `PipeReader`.
 - Last commit: https://github.com/dotnet/corefxlab/commit/3bd0ffdef64b4510b408200cf4281d24b5742abd#diff-54667d4e0d8ffdddf979ebbfe5681938
 - Removal: https://github.com/dotnet/corefxlab/pull/2244, https://github.com/dotnet/corefxlab/pull/2244/commits/abba6a7e8faf530e5e2c8216d30ec01c73594e8c
 
-As per the commits above it was an experiment that was abondoned.
+As per the commits above it was an experiment that was abandoned.
 It would have been very hard to implement native file access for each
 platform.
 
